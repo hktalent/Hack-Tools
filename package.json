@@ -44,7 +44,11 @@
 		"webpack-cli": "^4.9.1",
 		"webpack-dev-server": "^4.5.0"
 	},
-	"browserslist": [ ">0.2%", "not dead", "not op_mini all" ],
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not op_mini all"
+	],
 	"dependencies": {
 		"@ant-design/icons": "4.7.0",
 		"@hot-loader/react-dom": "^17.0.1",

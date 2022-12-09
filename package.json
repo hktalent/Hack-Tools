@@ -62,6 +62,7 @@
 		"axios": "^0.24.0",
 		"crypto-js": "^4.0.0",
 		"escape-quotes": "^1.0.2",
+		"js-base64": "^3.7.2",
 		"less": "^4.1.2",
 		"less-loader": "^10.2.0",
 		"pretty": "^2.0.0",

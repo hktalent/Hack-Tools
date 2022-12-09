@@ -203,7 +203,7 @@ export default function LayoutApp ( props: {
                     right: 0
                 }}
             ><a href="https://51pwn.com" target="_blank"><div className='logo'>
-                <img width="45" src="https://51pwn.com/img/ico.jpg"/></div></a>
+                <img width="45" src="https://51pwn.com/static/favicon.ico"/></div></a>
                 <Menu theme='dark' defaultSelectedKeys={[ index ]} mode='inline'>
                     {MenuItemsLists}
                 </Menu>

